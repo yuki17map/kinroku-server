@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 type Session = {
   date: string;
@@ -8,19 +7,23 @@ type Session = {
 };
 
 function App() {
+  // 1️⃣ 保存データの読み込み
   const [sessions, setSessions] = useState<Session[]>(() => {
     const saved = localStorage.getItem("sessions");
     return saved ? JSON.parse(saved) : [];
   });
 
+  // 2️⃣ 入力フォームの状態を管理
   const [date, setDate] = useState("");
   const [part, setPart] = useState("");
   const [volume, setVolume] = useState<number | "">("");
 
+  // 3️⃣ データが変わるたび localStorage に保存
   useEffect(() => {
     localStorage.setItem("sessions", JSON.stringify(sessions));
   }, [sessions]);
 
+  // 4️⃣ 新しいセッションを追加
   const addSession = () => {
     if (!date || !part || !volume) {
       alert("日付・部位・ボリュームをすべて入力してください！");
@@ -28,56 +31,21 @@ function App() {
     }
     const newSession = { date, part, volume: Number(volume) };
     setSessions([...sessions, newSession]);
+    // 入力欄をリセット
     setDate("");
     setPart("");
     setVolume("");
   };
 
+  // 5️⃣ セッション削除
   const deleteSession = (index: number) => {
     const updated = sessions.filter((_, i) => i !== index);
     setSessions(updated);
   };
 
-  // 🧮 合計ボリュームを計算
-  const totalVolume = sessions.reduce((sum, s) => sum + s.volume, 0);
-
-  // 📊 グラフ用データ（日付ごとの合計）
-  const volumeByDate = Object.values(
-    sessions.reduce((acc: any, s) => {
-      if (!acc[s.date]) acc[s.date] = { date: s.date, volume: 0 };
-      acc[s.date].volume += s.volume;
-      return acc;
-    }, {})
-  );
-
   return (
-    <div style={{ padding: "20px", maxWidth: "500px", margin: "auto" }}>
+    <div style={{ padding: "20px", maxWidth: "400px", margin: "auto" }}>
       <h1>筋録</h1>
-
-      {/* 🧮 合計ボリューム */}
-      <h2 style={{ color: "#007AFF" }}>合計ボリューム：{totalVolume.toLocaleString()} kg</h2>
-
-      {/* 📊 グラフ表示 */}
-      {sessions.length > 0 && (
-        <div
-          style={{
-            height: 200,
-            margin: "20px 0",
-            background: "#f9f9f9",
-            borderRadius: "8px",
-            padding: "10px",
-          }}
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={volumeByDate}>
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="volume" fill="#007AFF" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      )}
 
       {/* 📋 記録一覧 */}
       {sessions.length === 0 ? (
@@ -133,7 +101,7 @@ function App() {
             type="text"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            placeholder="例：10/10"
+            placeholder="例：10/08"
             style={{ width: "100%", marginBottom: "8px" }}
           />
         </label>
@@ -155,7 +123,7 @@ function App() {
             type="number"
             value={volume}
             onChange={(e) => setVolume(Number(e.target.value))}
-            placeholder="例：15000"
+            placeholder="例：12000"
             style={{ width: "100%", marginBottom: "8px" }}
           />
         </label>
