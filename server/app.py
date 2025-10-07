@@ -53,5 +53,7 @@ def delete_session(id):
     return jsonify({"message": "Session deleted."})
 
 if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 10000))  # Render が指定する環境変数 PORT を使用
     init_db()
-    app.run(port=5000, debug=True)
+    app.run(host="0.0.0.0", port=port)
