@@ -1,69 +1,32 @@
-import { Calendar, Trophy } from 'lucide-react';
-import { Badge } from './ui/badge';
-import { Card } from './ui/card';
+import React from "react";
 
-interface Exercise {
-  name: string;
-  weight: number;
-  reps: number;
-  sets: number;
-  isPR?: boolean;
-}
-
-interface SessionCardProps {
+type Props = {
   date: string;
-  bodyPart: string;
-  bodyPartColor: string;
-  bodyPartEmoji: string;
-  exercises: Exercise[];
-}
+  part: string;
+  volume: number;
+  onDelete?: () => void;
+};
 
-export function SessionCard({ date, bodyPart, bodyPartColor, bodyPartEmoji, exercises }: SessionCardProps) {
+export function SessionCard({ date, part, volume, onDelete }: Props) {
   return (
-    <Card className="mx-4 mb-4 p-4 bg-white border-[#E0E0E0]">
-      <div className="flex items-center gap-2 mb-3">
-        <Calendar className="w-4 h-4 text-[#666666]" />
-        <span className="text-[#666666]" style={{ fontFamily: 'Inter' }}>
-          {date}
-        </span>
-      </div>
-      
-      <div className="flex items-center gap-2 mb-4">
-        <div 
-          className="w-3 h-3 rounded-full"
-          style={{ backgroundColor: bodyPartColor }}
-        />
-        <span className="text-lg">{bodyPartEmoji}</span>
-        <Badge 
-          variant="secondary" 
-          className="text-[#333333]"
-          style={{ 
-            backgroundColor: `${bodyPartColor}15`,
-            color: bodyPartColor,
-            fontFamily: 'Noto Sans JP'
-          }}
-        >
-          {bodyPart}
-        </Badge>
-      </div>
+    <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-3">
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="text-sm text-gray-500">📅 {date}</p>
+          <p className="text-lg font-medium">
+            {part}（{volume.toLocaleString()}kg）
+          </p>
+        </div>
 
-      <div className="space-y-2">
-        {exercises.map((exercise, index) => (
-          <div key={index} className="flex items-center justify-between pl-4">
-            <div className="flex items-center gap-2">
-              <span className="text-[#333333]" style={{ fontFamily: 'Noto Sans JP' }}>
-                ・{exercise.name}
-              </span>
-              {exercise.isPR && (
-                <Trophy className="w-4 h-4 text-[#00C853]" />
-              )}
-            </div>
-            <span className="text-[#666666]" style={{ fontFamily: 'Inter' }}>
-              {exercise.weight}kg × {exercise.reps}回 × {exercise.sets}set
-            </span>
-          </div>
-        ))}
+        {onDelete && (
+          <button
+            onClick={onDelete}
+            className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600 transition"
+          >
+            🗑️ 削除
+          </button>
+        )}
       </div>
-    </Card>
+    </div>
   );
 }

@@ -7,6 +7,7 @@ type Props = {
 export function AddSessionButton({ onClick }: Props) {
   return (
     <button
+      type="button"
       onClick={onClick}
       className="w-full border-2 border-dashed border-blue-500 text-blue-600 rounded-lg py-3 mt-4 hover:bg-blue-50 transition"
     >
