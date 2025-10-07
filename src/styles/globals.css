@@ -1,3 +1,6 @@
+/* Noto Sans JPフォント読み込み — 必ず最上部に！ */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -129,9 +132,7 @@
   }
 }
 
-/**
- * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
- */
+/* タイポグラフィ */
 @layer base {
   :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
     h1 {
@@ -139,46 +140,18 @@
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
     }
-
     h2 {
       font-size: var(--text-xl);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
     }
-
     h3 {
       font-size: var(--text-lg);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
     }
-
-    h4 {
+    p, label, button, input {
       font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    p {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-normal);
-      line-height: 1.5;
-    }
-
-    label {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    button {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    input {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-normal);
       line-height: 1.5;
     }
   }
@@ -188,7 +161,7 @@ html {
   font-size: var(--font-size);
 }
 
-/* 筋録アプリ専用カラーパレット */
+/* 筋録アプリ専用カラー */
 :root {
   --kinroku-main-blue: #007AFF;
   --kinroku-chest-red: #FF4B4B;
@@ -199,9 +172,6 @@ html {
   --kinroku-divider: #E0E0E0;
   --kinroku-card-bg: #F8F9FA;
 }
-
-/* Noto Sans JPフォント読み込み */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 
 body {
   font-family: 'Noto Sans JP', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;

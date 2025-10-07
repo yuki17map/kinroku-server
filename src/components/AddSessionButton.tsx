@@ -1,21 +1,16 @@
-import { Plus } from 'lucide-react';
-import { Button } from './ui/button';
+import React from "react";
 
-interface AddSessionButtonProps {
-  onAddSession: () => void;
-}
+type Props = {
+  onClick: () => void;
+};
 
-export function AddSessionButton({ onAddSession }: AddSessionButtonProps) {
+export function AddSessionButton({ onClick }: Props) {
   return (
-    <div className="mx-4 mb-4">
-      <Button 
-        onClick={onAddSession}
-        className="w-full bg-white border-2 border-dashed border-[#007AFF] text-[#007AFF] hover:bg-[#F0F8FF] h-12"
-        style={{ fontFamily: 'Noto Sans JP' }}
-      >
-        <Plus className="w-4 h-4 mr-2" />
-        新しいセッションを追加
-      </Button>
-    </div>
+    <button
+      onClick={onClick}
+      className="w-full border-2 border-dashed border-blue-500 text-blue-600 rounded-lg py-3 mt-4 hover:bg-blue-50 transition"
+    >
+      ＋ 新しいセッションを追加
+    </button>
   );
 }
