@@ -1,7 +1,7 @@
-# server/app.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sqlite3
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -22,14 +22,18 @@ def init_db():
     conn.commit()
     conn.close()
 
+@app.route("/")
+def index():
+    return "筋録 API サーバーが動作しています"
+
 @app.route("/sessions", methods=["GET"])
 def get_sessions():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("SELECT * FROM sessions ORDER BY id DESC")
-    data = c.fetchall()
+    rows = c.fetchall()
     conn.close()
-    sessions = [{"id": r[0], "date": r[1], "part": r[2], "volume": r[3]} for r in data]
+    sessions = [{"id": r[0], "date": r[1], "part": r[2], "volume": r[3]} for r in rows]
     return jsonify(sessions)
 
 @app.route("/sessions", methods=["POST"])
@@ -53,7 +57,7 @@ def delete_session(id):
     return jsonify({"message": "Session deleted."})
 
 if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 10000))  # Render が指定する環境変数 PORT を使用
+    # Render 用に動的ポート対応
+    port = int(os.environ.get("PORT", 10000))
     init_db()
     app.run(host="0.0.0.0", port=port)
